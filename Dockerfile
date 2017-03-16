@@ -13,8 +13,7 @@ RUN set -x && \
   rm -rf /tmp/*
 ENV PATH $PATH:/usr/local/scala/scala-$SCALA_VERSION/bin
 
-RUN addgroup scala && \
-  adduser -G scala -s /bin/sh -D scala
+RUN useradd -m -s /bin/bash scala
 RUN mkdir -p /var/opt/activator
 
 # Install typesafe activator
