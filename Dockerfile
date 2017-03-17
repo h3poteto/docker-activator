@@ -1,4 +1,4 @@
-FROM openjdk:9
+FROM openjdk:8
 
 ENV SCALA_VERSION 2.12.1
 ENV ACTIVATOR_VER 1.3.12
@@ -27,6 +27,15 @@ RUN set -x && \
   rm -f /var/opt/activator/typesafe-activator-${ACTIVATOR_VER}-minimal.zip && \
   chmod -R 775 /var/opt/activator/activator/bin/
 ENV PATH=$PATH:/var/opt/activator/activator/bin
+
+# Install sbt
+RUN set -x && \
+  curl -L -o sbt-${SBT_VERSION}.deb http://dl.bintray.com/sbt/debian/sbt-${SBT_VERSION}.deb && \
+  dpkg -i sbt-${SBT_VERSION}.deb && \
+  rm sbt-${SBT_VERSION}.deb && \
+  apt-get update && \
+  apt-get install sbt && \
+  sbt sbtVersion
 
 RUN mkdir -p /var/opt/app && \
   chown -R scala:scala /var/opt/app
