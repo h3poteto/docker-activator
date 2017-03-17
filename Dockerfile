@@ -45,6 +45,7 @@ USER scala
 WORKDIR /var/opt/app
 
 RUN set -x && \
+  activator list-templates; echo "activator" && \
   sbt sbtVersion && \
   mkdir -p $HOME/.sbt/0.13/plugins && \
   echo "addSbtPlugin(\"org.ensime\" % \"ensime-sbt\" % \"0.1.7\")" >> $HOME/.sbt/0.13/plugins/plugins.sbt && \
