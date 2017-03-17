@@ -35,7 +35,7 @@ RUN set -x && \
   rm sbt-${SBT_VERSION}.deb && \
   apt-get update && \
   apt-get install sbt && \
-  sbt sbtVersion
+  rm -rf /var/lib/apt/lists/*
 
 RUN mkdir -p /var/opt/app && \
   chown -R scala:scala /var/opt/app
@@ -43,3 +43,9 @@ RUN mkdir -p /var/opt/app && \
 USER scala
 
 WORKDIR /var/opt/app
+
+RUN set -x && \
+  sbt sbtVersion && \
+  mkdir -p $HOME/.sbt/0.13/plugins && \
+  echo "addSbtPlugin(\"org.ensime\" % \"ensime-sbt\" % \"0.1.7\")" >> $HOME/.sbt/0.13/plugins/plugins.sbt && \
+  sbt sbtVersion
