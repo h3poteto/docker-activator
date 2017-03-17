@@ -2,8 +2,6 @@ FROM openjdk:8
 
 ENV SCALA_VERSION 2.12.1
 ENV ACTIVATOR_VER 1.3.12
-ENV SBT_VERSION 0.13.13
-
 
 WORKDIR /tmp
 
@@ -28,15 +26,6 @@ RUN set -x && \
   chmod -R 775 /var/opt/activator/activator/bin/
 ENV PATH=$PATH:/var/opt/activator/activator/bin
 
-# Install sbt
-RUN set -x && \
-  curl -L -o sbt-${SBT_VERSION}.deb http://dl.bintray.com/sbt/debian/sbt-${SBT_VERSION}.deb && \
-  dpkg -i sbt-${SBT_VERSION}.deb && \
-  rm sbt-${SBT_VERSION}.deb && \
-  apt-get update && \
-  apt-get install sbt && \
-  rm -rf /var/lib/apt/lists/*
-
 RUN mkdir -p /var/opt/app && \
   chown -R scala:scala /var/opt/app
 
@@ -45,8 +34,4 @@ USER scala
 WORKDIR /var/opt/app
 
 RUN set -x && \
-  activator list-templates; echo "activator" && \
-  sbt sbtVersion && \
-  mkdir -p $HOME/.sbt/0.13/plugins && \
-  echo "addSbtPlugin(\"org.ensime\" % \"ensime-sbt\" % \"0.1.7\")" >> $HOME/.sbt/0.13/plugins/plugins.sbt && \
-  sbt sbtVersion
+  activator list-templates; echo "activator"
