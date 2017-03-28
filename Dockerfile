@@ -15,6 +15,11 @@ RUN set -x && \
   chmod -R 775 /var/opt/activator/activator/bin/
 ENV PATH=$PATH:/var/opt/activator/activator/bin
 
+RUN set -x && \
+  apt-get update && \
+  apt-get install -y mysql-client && \
+  rm -rf /var/cache/apt/archives/* /var/lib/apt/lists/*
+
 RUN mkdir -p /var/opt/app && \
   chown -R scala:scala /var/opt/app
 
